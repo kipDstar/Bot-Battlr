@@ -1,0 +1,30 @@
+/* src/components/BotCard/BotCard.css */
+.bot-card {
+    border: 1px solid #333;
+    background: #20252d;
+    padding: 1rem;
+    border-radius: 12px;
+    width: 200px;
+    color: #f0f0f0;
+    text-align: center;
+    transition: transform 0.2s ease-in-out;
+    cursor: pointer;
+  }
+  
+  .bot-card:hover {
+    transform: scale(1.05);
+    background: #2a2f3a;
+  }
+  
+  .bot-avatar {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    margin-bottom: 0.5rem;
+  }
+  
+  .bot-attributes {
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+  }
+  
