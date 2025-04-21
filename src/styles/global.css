@@ -1,12 +1,18 @@
-
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+* {
+    box-sizing: border-box;
     margin: 0;
-    background-color: #10141c;
-    color: #ffffff;
+    padding: 0;
   }
   
-  button {
-    cursor: pointer;
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--background-dark);
+    color: var(--text-primary);
+    line-height: 1.6;
   }
   
+  #root {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
