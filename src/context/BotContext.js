@@ -1,75 +1,68 @@
-import React, { createContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
+import { getBots, deleteBot } from "../utils/api";
 
-export const BotContext = createContext();
+const BotContext = createContext();
 
-export const BotProvider = ({ children }) => {
+export function BotProvider({ children }) {
   const [bots, setBots] = useState([]);
-  const [army, setArmy] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const [filteredBots, setFilteredBots] = useState([]);
+  const [sortType, setSortType] = useState("");
+  const [filterClass, setFilterClass] = useState("");
+  const [botArmy, setBotArmy] = useState([]);
 
-  const BASE_URL = "http://localhost:8001/bots";
-
-  // Fetch bots on mount
   useEffect(() => {
-    const fetchBots = async () => {
-      try {
-        const res = await fetch(BASE_URL);
-        if (!res.ok) throw new Error("Failed to fetch bots");
-        const data = await res.json();
-        setBots(data);
-      } catch (err) {
-        setError("Failed to load bots.");
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchBots();
+    getBots().then(setBots);
   }, []);
 
-  // Add bot to army (only once)
+  useEffect(() => {
+    let updated = [...bots];
+
+    if (filterClass) {
+      updated = updated.filter((bot) => bot.bot_class === filterClass);
+    }
+
+    if (sortType) {
+      updated.sort((a, b) => b[sortType] - a[sortType]);
+    }
+
+    setFilteredBots(updated);
+  }, [bots, filterClass, sortType]);
+
   const enlistBot = (bot) => {
-    const alreadyInArmy = army.find((b) => b.id === bot.id);
-    if (!alreadyInArmy) {
-      setArmy((prev) => [...prev, bot]);
-    }
+    if (botArmy.find((b) => b.id === bot.id)) return;
+    setBotArmy((prev) => [...prev, bot]);
   };
 
-  // Remove bot from army
-  const releaseBot = (botId) => {
-    setArmy((prev) => prev.filter((bot) => bot.id !== botId));
+  const removeFromArmy = (botId) => {
+    setBotArmy((prev) => prev.filter((b) => b.id !== botId));
   };
 
-  // Delete bot from backend + frontend
-  const dischargeBot = async (botId) => {
-    try {
-      const res = await fetch(`${BASE_URL}/${botId}`, {
-        method: "DELETE",
-      });
-      if (!res.ok) throw new Error("Failed to delete bot");
-      setArmy((prev) => prev.filter((bot) => bot.id !== botId));
-      setBots((prev) => prev.filter((bot) => bot.id !== botId));
-    } catch (err) {
-      setError("Failed to discharge bot.");
-      console.error(err);
-    }
+  const permanentlyDeleteBot = async (botId) => {
+    await deleteBot(botId);
+    setBots((prev) => prev.filter((b) => b.id !== botId));
+    setBotArmy((prev) => prev.filter((b) => b.id !== botId));
   };
 
   return (
     <BotContext.Provider
       value={{
         bots,
-        army,
-        loading,
-        error,
+        filteredBots,
+        sortType,
+        setSortType,
+        filterClass,
+        setFilterClass,
+        botArmy,
         enlistBot,
-        releaseBot,
-        dischargeBot,
+        removeFromArmy,
+        permanentlyDeleteBot,
       }}
     >
       {children}
     </BotContext.Provider>
   );
-};
+}
+
+export function useBotContext() {
+  return useContext(BotContext);
+}
