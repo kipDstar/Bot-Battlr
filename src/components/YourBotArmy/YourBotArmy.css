@@ -1,0 +1,43 @@
+
+.your-bot-army {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+  }
+  
+  .bot-army-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+  }
+  
+  .army-bot-card {
+    background-color: #f1f1f1;
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+    width: 180px;
+  }
+  
+  .army-bot-card img {
+    width: 100%;
+    border-radius: 8px;
+  }
+  
+  .army-bot-card button {
+    margin-top: 10px;
+    padding: 5px 10px;
+    background-color: #ff6b6b;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  
+  .army-bot-card button:hover {
+    background-color: #ff3b3b;
+  }
+  
