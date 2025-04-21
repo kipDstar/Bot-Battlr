@@ -1,8 +1,15 @@
 :root {
-    --primary-color: #0ff;
-    --accent-color: #f0f;
-    --dark-bg: #10141c;
-    --light-bg: #1f2633;
+    --primary-color: #6e00ff;
+    --secondary-color: #ff00a0;
+    --background-dark: #0f0e17;
+    --background-light: #1a1a2e;
+    --text-primary: #fffffe;
+    --text-secondary: #a7a9be;
+    --highlight: #ff8906;
+    --support-color: #00b4d8;
+    --medic-color: #00c896;
+    --assault-color: #f72585;
+    --defender-color: #4cc9f0;
+    --captain-color: #7209b7;
+    --witch-color: #b5179e;
   }
-  
-  
