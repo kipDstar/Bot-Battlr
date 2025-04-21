@@ -1,0 +1,19 @@
+.search-bar {
+    margin: 1rem;
+    text-align: center;
+  }
+  
+  .search-bar input {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    width: 300px;
+    transition: box-shadow 0.3s ease;
+  }
+  
+  .search-bar input:focus {
+    outline: none;
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+  }
+  

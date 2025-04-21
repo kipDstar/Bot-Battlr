@@ -4,11 +4,13 @@ import FilterBar from "../components/FilterBar/FilterBar";
 import SortBar from "../components/SortBar/SortBar";
 import BotCollection from "../components/BotCollection/BotCollection";
 import YourBotArmy from "../components/YourBotArmy/YourBotArmy";
+import SearchBar from "../components/SearchBar/SearchBar";
 
 function Home() {
   return (
     <div className="home-page">
       <YourBotArmy />
+      <SearchBar />
       <FilterBar />
       <SortBar />
       <BotCollection />
