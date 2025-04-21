@@ -1,68 +1,74 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Home from './pages/Home';
-import BotDetails from './pages/BotDetails';
-import ErrorDisplay from './components/ErrorDisplay/ErrorDisplay';
-import { useState } from 'react';
-import useFetch from './hooks/useFetch';
+import React, { useEffect, useState } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import AppLayout from "./components/AppLayout/AppLayout";
+import Home from "./pages/Home";
+import BotDetails from "./pages/BotDetails";
+import "./styles/global.css"; // Assuming this is your global styles
 
-function App() {
+const App = () => {
+  const [bots, setBots] = useState([]);
   const [army, setArmy] = useState([]);
-  const { data: bots, loading, error, refetch } = useFetch('http://localhost:8001/bots');
 
+  // Fetch bots from JSON Server
+  useEffect(() => {
+    fetch("http://localhost:8001/bots")
+      .then((res) => res.json())
+      .then((data) => setBots(data))
+      .catch((error) => console.error("Error fetching bots:", error));
+  }, []);
+
+  // Bot logic handlers
   const enlistBot = (bot) => {
-    const isClassInArmy = army.some(b => b.bot_class === bot.bot_class);
-    
-    if (!isClassInArmy && !army.some(b => b.id === bot.id)) {
+    if (!army.find((b) => b.id === bot.id)) {
       setArmy([...army, bot]);
-    } else if (isClassInArmy) {
-      alert(`You can only have one ${bot.bot_class} in your army!`);
     }
   };
 
-  const releaseBot = (botId) => {
-    setArmy(army.filter(bot => bot.id !== botId));
+  const releaseBot = (bot) => {
+    setArmy(army.filter((b) => b.id !== bot.id));
   };
 
-  const dischargeBot = async (botId) => {
-    try {
-      const response = await fetch(`http://localhost:8001/bots/${botId}`, {
-        method: 'DELETE'
-      });
-      
-      if (!response.ok) throw new Error('Failed to discharge bot');
-      
-      setArmy(army.filter(bot => bot.id !== botId));
-      refetch();
-    } catch (error) {
-      console.error('Error discharging bot:', error);
-    }
+  const dischargeBot = (bot) => {
+    fetch(`http://localhost:8001/bots/${bot.id}`, {
+      method: "DELETE",
+    })
+      .then(() => {
+        setArmy(army.filter((b) => b.id !== bot.id));
+        setBots(bots.filter((b) => b.id !== bot.id));
+      })
+      .catch((error) => console.error("Error deleting bot:", error));
   };
-
-  if (loading) return <div className="loading-screen">Initializing Bot Network...</div>;
-  if (error) return <ErrorDisplay error={error} onRetry={refetch} />;
 
   return (
     <Router>
-      <Routes>
-        <Route path="/" element={
-          <Home 
-            bots={bots} 
-            army={army}
-            onEnlist={enlistBot}
-            onRelease={releaseBot}
-            onDischarge={dischargeBot}
+      <AppLayout>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <Home
+                bots={bots}
+                army={army}
+                onEnlist={enlistBot}
+                onRelease={releaseBot}
+                onDischarge={dischargeBot}
+              />
+            }
           />
-        } />
-        <Route path="/bots/:id" element={
-          <BotDetails 
-            bots={bots}
-            army={army}
-            onEnlist={enlistBot}
+          <Route
+            path="/bots/:id"
+            element={
+              <BotDetails
+                bots={bots}
+                army={army}
+                onEnlist={enlistBot}
+              />
+            }
           />
-        } />
-      </Routes>
+        </Routes>
+      </AppLayout>
     </Router>
   );
-}
+};
 
 export default App;
