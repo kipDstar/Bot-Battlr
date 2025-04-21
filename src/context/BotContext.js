@@ -21,12 +21,18 @@ export function BotProvider({ children }) {
       updated = updated.filter((bot) => bot.bot_class === filterClass);
     }
 
+    if (searchQuery) {
+        updated = updated.filter((bot) =>
+          bot.name.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+    }
+
     if (sortType) {
       updated.sort((a, b) => b[sortType] - a[sortType]);
     }
 
     setFilteredBots(updated);
-  }, [bots, filterClass, sortType]);
+  }, [bots, filterClass, sortType, searchQuery]);
 
   const enlistBot = (bot) => {
     if (botArmy.find((b) => b.id === bot.id)) return;
@@ -56,6 +62,8 @@ export function BotProvider({ children }) {
         enlistBot,
         removeFromArmy,
         permanentlyDeleteBot,
+        searchQuery,
+        setSearchQuery,
       }}
     >
       {children}
