@@ -1,35 +1,33 @@
 //Detailed Bot info page
 // src/pages/BotDetails.jsx
-import React, { useContext, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { BotContext } from '../context/BotContext';
-import { fetchBotById } from '../utils/api';
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { fetchBotById } from "../utils/api"; 
 
 const BotDetails = () => {
   const { id } = useParams();
-  const { bots } = useContext(BotContext);
-  const [botDetails, setBotDetails] = useState(null);
+  const [bot, setBot] = useState(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const bot = bots.find((bot) => bot.id === id);
-    if (bot) {
-      setBotDetails(bot);
-    } else {
-      fetchBotById(id).then(setBotDetails);
-    }
-  }, [id, bots]);
+    fetchBotById(id)
+      .then((data) => setBot(data))
+      .catch((error) => setError(error.message));
+  }, [id]);
 
-  if (!botDetails) {
-    return <div>Loading...</div>;
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
+  if (!bot) {
+    return <div>Loading bot details...</div>;
   }
 
   return (
     <div>
-      <h2>{botDetails.name}</h2>
-      <img src={botDetails.imageUrl} alt={botDetails.name} />
-      <p>{botDetails.catchphrase}</p>
-      <p>{botDetails.description}</p>
-      <button>Remove from Army</button>
+      <h1>{bot.name}</h1>
+      <p>{bot.catchphrase}</p>
+      <img src={bot.avatar_url} alt={bot.name} />
     </div>
   );
 };

@@ -1202,6 +1202,7 @@
     }
   ],
   "devDependencies": {
+    "@vitejs/plugin-react": "^4.4.1",
     "json-server": "^1.0.0-beta.3"
   },
   "dependencies": {

@@ -6,5 +6,6 @@ export default defineConfig({
   plugins: [react()],
   server: {
     open: true, // Automatically opens the browser
+    historyApiFallback: true, // Ensures React Router works
   },
 });

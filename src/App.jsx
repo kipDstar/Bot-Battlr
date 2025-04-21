@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import AppLayout from "./components/AppLayout/AppLayout";
 import Home from "./pages/Home";
 import BotDetails from "./pages/BotDetails";
-import "./styles/global.css"; // Assuming this is your global styles
+import "./App.css"; 
 
 const App = () => {
   const [bots, setBots] = useState([]);
@@ -40,34 +40,10 @@ const App = () => {
   };
 
   return (
-    <Router>
-      <AppLayout>
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <Home
-                bots={bots}
-                army={army}
-                onEnlist={enlistBot}
-                onRelease={releaseBot}
-                onDischarge={dischargeBot}
-              />
-            }
-          />
-          <Route
-            path="/bots/:id"
-            element={
-              <BotDetails
-                bots={bots}
-                army={army}
-                onEnlist={enlistBot}
-              />
-            }
-          />
-        </Routes>
-      </AppLayout>
-    </Router>
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/bots/:id" element={<BotDetails />} />
+    </Routes>
   );
 };
 

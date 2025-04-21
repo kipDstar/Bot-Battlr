@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { getBots, deleteBot } from "../utils/api";
 
-const BotContext = createContext();
+export const BotContext = createContext(); // Export BotContext here
 
 export function BotProvider({ children }) {
   const [bots, setBots] = useState([]);
@@ -10,9 +10,10 @@ export function BotProvider({ children }) {
   const [filterClass, setFilterClass] = useState("");
   const [botArmy, setBotArmy] = useState([]);
   const [error, setError] = useState(null);
+  const [searchQuery, setSearchQuery] = useState(""); // Add searchQuery state
 
   useEffect(() => {
-    getBots().then(setBots);
+    getBots().then(setBots).catch(setError);
   }, []);
 
   useEffect(() => {
@@ -23,9 +24,9 @@ export function BotProvider({ children }) {
     }
 
     if (searchQuery) {
-        updated = updated.filter((bot) =>
-          bot.name.toLowerCase().includes(searchQuery.toLowerCase())
-        );
+      updated = updated.filter((bot) =>
+        bot.name.toLowerCase().includes(searchQuery.toLowerCase())
+      );
     }
 
     if (sortType) {
@@ -54,14 +55,10 @@ export function BotProvider({ children }) {
     <BotContext.Provider
       value={{
         bots,
-        loading,
+        setBots,
         error,
         setError,
-        army,
-        addToArmy,
-        removeFromArmy,
         filteredBots,
-        releaseBot,
         sortType,
         setSortType,
         filterClass,
