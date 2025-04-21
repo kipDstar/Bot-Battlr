@@ -1,0 +1,29 @@
+/* src/components/BotSpecs/BotSpecs.css */
+.bot-specs {
+    padding: 2rem;
+    background: #181c24;
+    color: #fff;
+    border-radius: 16px;
+    max-width: 600px;
+    margin: auto;
+    text-align: center;
+  }
+  
+  .bot-specs img {
+    width: 200px;
+    border-radius: 50%;
+    margin-bottom: 1rem;
+  }
+  
+  .bot-specs h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+  
+  .bot-specs .details {
+    display: flex;
+    justify-content: space-around;
+    font-size: 1.1rem;
+    margin-top: 1rem;
+  }
+  
