@@ -4,6 +4,9 @@ import BotCard from '../BotCard/BotCard';
 import { BotContext } from '../../context/BotContext';
 import { fetchBots } from '../../utils/api';
 import './BotCollection.css';
+import ErrorDisplay from "../ErrorDisplay/ErrorDisplay";
+
+{error && <ErrorDisplay message={error} />}
 
 const BotCollection = () => {
   const { bots, setBots } = useContext(BotContext);
@@ -15,7 +18,7 @@ const BotCollection = () => {
         const botData = await fetchBots();
         setBots(botData);
       } catch (error) {
-        console.error('Error fetching bots:', error);
+        setError("Failed to load bots. Please try again:", error);
       } finally {
         setLoading(false);
       }
