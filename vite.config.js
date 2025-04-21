@@ -1,16 +1,10 @@
+// filepath: /home/jesse/Development/code/Projects/bot-battlr-project/vite.config.js
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
 export default defineConfig({
   plugins: [react()],
-  base: "/", 
-  resolve: {
-    alias: {
-      '@': '/src',
-    },
-  },
   server: {
-    historyApiFallback: true, 
-    open: true, 
+    open: true, // Automatically opens the browser
   },
 });
